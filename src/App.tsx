@@ -8,6 +8,10 @@ import {
 const FORM_ENDPOINT = "https://formspree.io/f/xnnzyvev";
 const FOREST_HEX = "#3c5531";
 
+/* Update this to your exact asset URL from the GitHub release */
+const LINUX_DOWNLOAD =
+  "https://github.com/AlfredXavier17/moonreader/releases/download/v1.0.0/EclipsePDF-1.0.0-linux-x86_64.AppImage";
+
 /* -------------------- Tiny hash router -------------------- */
 function useHashRoute() {
   const [route, setRoute] = useState(window.location.hash.replace("#", "") || "home");
@@ -164,7 +168,7 @@ function Landing() {
                   <WindowsLogo className="h-4 w-4" />
                   Get on Microsoft Store (Windows)
                 </PrimaryButton>
-                <PrimaryButton href="/downloads/EclipsePDF.AppImage">
+                <PrimaryButton href={LINUX_DOWNLOAD}>
                   <Download className="h-5 w-5" />
                   Download for Linux
                 </PrimaryButton>
@@ -210,8 +214,8 @@ function Landing() {
               Dark, Sepia, Forest, or Default — switch instantly for eye comfort and focus.
             </FeatureCard>
             <FeatureCard icon={Sun} title="Brightness control">
-              Fine-tune brightness and contrast so PDFs look perfect in any environment.
-            </FeatureCard>
+            Fine-tune brightness and contrast so PDFs look perfect in any environment.
+          </FeatureCard>
             <FeatureCard icon={Moon} title="Focus reading">
               Distraction-free view with clean controls and buttery-smooth scrolling.
             </FeatureCard>
@@ -281,7 +285,7 @@ function Landing() {
                 <WindowsLogo className="h-4 w-4" />
                 Get on Microsoft Store (Windows)
               </PrimaryButton>
-              <PrimaryButton href="/downloads/EclipsePDF.AppImage">
+              <PrimaryButton href={LINUX_DOWNLOAD}>
                 <Download className="h-5 w-5"/> Download for Linux
               </PrimaryButton>
             </div>
