@@ -1,6 +1,6 @@
 {
   "latestVersion": "1.0.0",
   "changelog": "First Eclipse PDF release — new branding, themes, and editing.",
-  "windowsStoreLink": "https://apps.microsoft.com/detail/your-app-id",
-  "linuxAppImageLink": "https://www.eclipsepdf.com/downloads/EclipsePDF-1.0.0.AppImage"
+  "windowsStoreLink": "https://apps.microsoft.com/store/detail/YOUR_APP_ID",
+  "linuxAppImageLink": "https://github.com/AlfredXavier17/eclipse-pdf/releases/download/v1.0.0/EclipsePDF-1.0.0-linux-x86_64.AppImage"
 }
