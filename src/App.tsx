@@ -52,10 +52,23 @@ const NavLink = ({ onClick, children }: { onClick?: () => void; children: React.
   </button>
 );
 
-const PrimaryButton = ({ href = "#", children }: { href?: string; children: React.ReactNode }) => (
+/* Forward onClick + other anchor props */
+type PrimaryButtonProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  href?: string;
+  children: React.ReactNode;
+};
+
+const PrimaryButton = ({ href = "#", children, ...props }: PrimaryButtonProps) => (
   <a
     href={href}
-    className="inline-flex items-center gap-2 rounded-2xl px-5 py-3 font-semibold bg-white text-zinc-900 hover:bg-white/90 active:scale-[.99] transition shadow"
+    target={props.target ?? "_blank"}
+    rel={props.rel ?? "noopener noreferrer"}
+    {...props}
+    className={
+      "inline-flex items-center gap-2 rounded-2xl px-5 py-3 font-semibold bg-white text-zinc-900 " +
+      "hover:bg-white/90 active:scale-[.99] transition shadow " +
+      (props.className ?? "")
+    }
   >
     {children}
   </a>
@@ -164,11 +177,18 @@ function Landing() {
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <PrimaryButton href="https://apps.microsoft.com/store/detail/YOUR_APP_ID">
+                <PrimaryButton
+                  href="https://apps.microsoft.com/store/detail/9MWN641KDS1B"
+                  onClick={() => trackEvent('click_download', { item: 'microsoft_store', platform: 'windows' })}
+                >
                   <WindowsLogo className="h-4 w-4" />
                   Get on Microsoft Store (Windows)
                 </PrimaryButton>
-                <PrimaryButton href={LINUX_DOWNLOAD}>
+
+                <PrimaryButton
+                  href={LINUX_DOWNLOAD}
+                  onClick={() => trackEvent('click_download', { item: 'direct_download', platform: 'linux' })}
+                >
                   <Download className="h-5 w-5" />
                   Download for Linux
                 </PrimaryButton>
@@ -214,8 +234,8 @@ function Landing() {
               Dark, Sepia, Forest, or Default — switch instantly for eye comfort and focus.
             </FeatureCard>
             <FeatureCard icon={Sun} title="Brightness control">
-            Fine-tune brightness and contrast so PDFs look perfect in any environment.
-          </FeatureCard>
+              Fine-tune brightness and contrast so PDFs look perfect in any environment.
+            </FeatureCard>
             <FeatureCard icon={Moon} title="Focus reading">
               Distraction-free view with clean controls and buttery-smooth scrolling.
             </FeatureCard>
@@ -233,7 +253,7 @@ function Landing() {
       <section id="themes" className="py-20 border-t border-white/10">
         <Container>
           <SectionTitle overline="Comfortable viewing" title="Four themes, zero eye strain" />
-          <div className="mt-10 grid md:grid-cols-2 gap-8 items-center">
+        <div className="mt-10 grid md:grid-cols-2 gap-8 items-center">
             <div className="grid gap-4">
               <ThemeDot label="Dark" />
               <ThemeDot label="Sepia" />
@@ -281,11 +301,18 @@ function Landing() {
             <h3 className="text-2xl md:text-3xl font-bold">Ready to try Eclipse PDF?</h3>
             <p className="mt-2 text-white/80">Get it for Windows or Linux and start reading smarter today.</p>
             <div className="mt-6 flex flex-wrap gap-3 justify-center">
-              <PrimaryButton href="https://apps.microsoft.com/store/detail/YOUR_APP_ID">
+              <PrimaryButton
+                href="https://apps.microsoft.com/store/detail/9MWN641KDS1B"
+                onClick={() => trackEvent('click_download', { item: 'microsoft_store', platform: 'windows' })}
+              >
                 <WindowsLogo className="h-4 w-4" />
                 Get on Microsoft Store (Windows)
               </PrimaryButton>
-              <PrimaryButton href={LINUX_DOWNLOAD}>
+
+              <PrimaryButton
+                href={LINUX_DOWNLOAD}
+                onClick={() => trackEvent('click_download', { item: 'direct_download', platform: 'linux' })}
+              >
                 <Download className="h-5 w-5"/> Download for Linux
               </PrimaryButton>
             </div>
@@ -395,7 +422,6 @@ function Support() {
             title="Support & Feedback"
             subtitle="Need help or have an idea? Reach out below — you’ll hear back soon."
           />
-          {/* centered, no empty side column */}
           <div className="mt-10 mx-auto w-full max-w-3xl">
             <SupportForm />
           </div>
@@ -447,6 +473,19 @@ function Privacy() {
   );
 }
 
+/* -------------------- GA helper -------------------- */
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
+export function trackEvent(action: string, params: Record<string, any> = {}) {
+  if (window.gtag) {
+    window.gtag("event", action, params);
+  }
+}
+
 /* -------------------- App root -------------------- */
 export default function App() {
   const [route] = useHashRoute();
@@ -459,7 +498,6 @@ export default function App() {
 
   useEffect(() => {
     // Smooth scroll for same-page anchors (features, themes, download).
-    // Only prevent default if the target element exists.
     const handler = (e: any) => {
       const a = (e.target as HTMLElement).closest?.('a[href^="#"]') as HTMLAnchorElement | null;
       const href = a?.getAttribute?.("href");
@@ -471,8 +509,6 @@ export default function App() {
         e.preventDefault();
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-      // if element doesn't exist, allow default so the hash changes
-      // and the router shows Support/Privacy pages.
     };
 
     document.addEventListener("click", handler);
