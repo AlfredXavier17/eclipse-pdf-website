@@ -8,10 +8,6 @@ import {
 const FORM_ENDPOINT = "https://formspree.io/f/xnnzyvev";
 const FOREST_HEX = "#3c5531";
 
-/* Update this to your exact asset URL from the GitHub release */
-const LINUX_DOWNLOAD =
-  "https://github.com/AlfredXavier17/moonreader/releases/download/v1.0.0/EclipsePDF-1.0.0-linux-x86_64.AppImage";
-
 /* -------------------- Tiny hash router -------------------- */
 function useHashRoute() {
   const [route, setRoute] = useState(window.location.hash.replace("#", "") || "home");
@@ -182,20 +178,26 @@ function Landing() {
                   onClick={() => trackEvent('click_download', { item: 'microsoft_store', platform: 'windows' })}
                 >
                   <WindowsLogo className="h-4 w-4" />
-                  Get on Microsoft Store (Windows)
+                  Get on Microsoft Store
                 </PrimaryButton>
 
                 <PrimaryButton
-                  href={LINUX_DOWNLOAD}
-                  onClick={() => trackEvent('click_download', { item: 'direct_download', platform: 'linux' })}
+                  href="https://chromewebstore.google.com/detail/igdgmhjmiicjgechaninpciapoofnoia"
+                  onClick={() => trackEvent('click_download', { item: 'chrome_extension', platform: 'chrome' })}
                 >
-                  <Download className="h-5 w-5" />
-                  Download for Linux
+                  Get Chrome Extension
+                </PrimaryButton>
+
+                <PrimaryButton
+                  href="https://play.google.com/store/apps/details?id=com.eclipsepdf&pcampaignid=web_share"
+                  onClick={() => trackEvent('click_download', { item: 'play_store', platform: 'android' })}
+                >
+                  Get on Play Store
                 </PrimaryButton>
               </div>
 
               <p className="mt-3 text-xs text-white/60">
-                No account. Local files only. Windows · Linux.
+                No account. Local files only. Windows · Android · Chrome.
               </p>
             </div>
 
@@ -299,21 +301,28 @@ function Landing() {
         <Container>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-8 md:p-12 text-center">
             <h3 className="text-2xl md:text-3xl font-bold">Ready to try Eclipse PDF?</h3>
-            <p className="mt-2 text-white/80">Get it for Windows or Linux and start reading smarter today.</p>
+            <p className="mt-2 text-white/80">Get it on Windows, Android, or Chrome and start reading smarter today.</p>
             <div className="mt-6 flex flex-wrap gap-3 justify-center">
               <PrimaryButton
                 href="https://apps.microsoft.com/store/detail/9MWN641KDS1B"
                 onClick={() => trackEvent('click_download', { item: 'microsoft_store', platform: 'windows' })}
               >
                 <WindowsLogo className="h-4 w-4" />
-                Get on Microsoft Store (Windows)
+                Get on Microsoft Store
               </PrimaryButton>
 
               <PrimaryButton
-                href={LINUX_DOWNLOAD}
-                onClick={() => trackEvent('click_download', { item: 'direct_download', platform: 'linux' })}
+                href="https://chromewebstore.google.com/detail/igdgmhjmiicjgechaninpciapoofnoia"
+                onClick={() => trackEvent('click_download', { item: 'chrome_extension', platform: 'chrome' })}
               >
-                <Download className="h-5 w-5"/> Download for Linux
+                Get Chrome Extension
+              </PrimaryButton>
+
+              <PrimaryButton
+                href="https://play.google.com/store/apps/details?id=com.eclipsepdf&pcampaignid=web_share"
+                onClick={() => trackEvent('click_download', { item: 'play_store', platform: 'android' })}
+              >
+                Get on Play Store
               </PrimaryButton>
             </div>
             <p className="mt-3 text-xs text-white/60">No account required. Local files only. Your docs stay private.</p>
